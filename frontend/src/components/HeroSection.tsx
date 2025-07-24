@@ -25,14 +25,20 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <motion.h1 
-            className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-          >
-            Verbo
-          </motion.h1>
+          
+            
+            <motion.div
+              className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent flex items-center space-x-4 justify-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+            >
+              <div className="w-16 h-16 bg-gradient-primary rounded-lg flex items-center justify-center">
+                <Sparkles className="w-10 h-10 text-white" />
+              </div>
+              <span>Verbo</span>
+            </motion.div>
+
           
           <motion.p 
             className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
