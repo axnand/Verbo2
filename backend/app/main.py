@@ -23,5 +23,5 @@ app.add_middleware(
 )
 
 # Register routes
-app.include_router(detect.router, prefix="/detect", tags=["Detection"])
-app.include_router(rephrase.router, prefix="/rephrase", tags=["Rephrasing"])
+app.include_router(detect.router, prefix="/api", tags=["AI Detection"])
+app.include_router(rephrase.router, prefix="/api", tags=["Rephrasing"])
