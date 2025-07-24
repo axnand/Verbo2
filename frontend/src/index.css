@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Verbo Design System - Dark-mode first AI detection tool */
+
+@layer base {
+  :root {
+    /* Light mode (for toggle) */
+    --background: 240 10% 96%;
+    --foreground: 240 10% 3.9%;
+    
+    --card: 240 7% 93%;
+    --card-foreground: 240 10% 3.9%;
+    
+    --popover: 240 7% 93%;
+    --popover-foreground: 240 10% 3.9%;
+    
+    --primary: 262 65% 55%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 240 4% 85%;
+    --secondary-foreground: 240 5% 26%;
+    
+    --muted: 240 5% 88%;
+    --muted-foreground: 240 3.8% 46.1%;
+    
+    --accent: 300 65% 55%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 262 65% 55%;
+    
+    --radius: 0.75rem;
+    
+    /* AI-themed colors */
+    --ai-primary: 262 65% 55%;
+    --ai-secondary: 300 65% 55%;
+    --ai-accent: 200 70% 60%;
+    --ai-warning: 25 95% 53%;
+    --ai-danger: 0 84% 60%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(262, 65%, 55%), hsl(300, 65%, 55%));
+    --gradient-secondary: linear-gradient(135deg, hsl(240, 15%, 20%), hsl(262, 20%, 25%));
+    --gradient-hero: linear-gradient(135deg, hsl(262, 65%, 55%) 0%, hsl(300, 65%, 55%) 50%, hsl(200, 70%, 60%) 100%);
+    --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    
+    /* Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    
+    /* Shadows */
+    --shadow-glow: 0 0 40px hsl(262 65% 55% / 0.3);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --shadow-elevated: 0 10px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .dark {
+    /* Dark mode (default) */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    
+    --card: 240 8% 8%;
+    --card-foreground: 0 0% 95%;
+    
+    --popover: 240 8% 8%;
+    --popover-foreground: 0 0% 95%;
+    
+    --primary: 262 65% 55%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    
+    --accent: 300 65% 55%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 262 65% 55%;
+    
+    /* Dark AI-themed colors */
+    --ai-primary: 262 65% 55%;
+    --ai-secondary: 300 65% 55%;
+    --ai-accent: 200 70% 60%;
+    --ai-warning: 25 95% 53%;
+    --ai-danger: 0 84% 60%;
+    
+    /* Dark Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(262, 65%, 55%), hsl(300, 65%, 55%));
+    --gradient-secondary: linear-gradient(135deg, hsl(240, 8%, 8%), hsl(240, 8%, 12%));
+    --gradient-hero: linear-gradient(135deg, hsl(262, 65%, 55%) 0%, hsl(300, 65%, 55%) 50%, hsl(200, 70%, 60%) 100%);
+    --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    
+    /* Dark Glassmorphism */
+    --glass-bg: rgba(0, 0, 0, 0.3);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    
+    /* Dark Shadows */
+    --shadow-glow: 0 0 40px hsl(262 65% 55% / 0.4);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-elevated: 0 10px 40px rgba(0, 0, 0, 0.6);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
