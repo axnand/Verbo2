@@ -21,7 +21,7 @@ class DetectResponse(BaseModel):
 
 class RephraseInput(BaseModel):
     text: str
-    tone: str  # 'polite', 'professional', 'casual', 'witty'
+    tone: str = "general"  # 'polite', 'professional', 'casual', 'witty'
 
 class RephraseResponse(BaseModel):
     original_text: str
