@@ -1,34 +1,46 @@
-# Use slim Python image to keep size minimal
-FROM python:3.10-slim
+# ─────────────────────────────────────────────
+# Stage 1: Build environment with pip + dependencies
+# ─────────────────────────────────────────────
+FROM python:3.11-slim as builder
 
-# Set env vars
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    TRANSFORMERS_CACHE=/tmp/hf_cache \
-    HF_HOME=/tmp/hf_cache
+ENV POETRY_VERSION=1.8.2
 
-# Create app directory
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    build-essential \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
-# Install basic system dependencies (only what's needed)
-RUN apt-get update && apt-get install -y \
-    build-essential gcc wget curl git \
- && rm -rf /var/lib/apt/lists/*
-
-# Install pip packages efficiently
+# Copy requirements and install into custom dir
 COPY requirements.txt .
 
-# Create virtualenv to isolate deps
-RUN python -m venv /opt/venv \
- && . /opt/venv/bin/activate \
- && pip install --upgrade pip \
- && pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip \
+ && pip install --prefix=/install --no-cache-dir -r requirements.txt
 
-# Copy only the necessary source code
-COPY . .
+# ─────────────────────────────────────────────
+# Stage 2: Runtime
+# ─────────────────────────────────────────────
+FROM python:3.11-slim
 
-# Expose FastAPI port
+# Set cache path (not included in image)
+ENV TRANSFORMERS_CACHE=/tmp/hf_cache \
+    HF_HOME=/tmp/hf_home \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Copy installed dependencies from builder
+COPY --from=builder /install /usr/local
+
+# Copy only source code, not extra files
+COPY app/ app/
+COPY main.py .
+
+# Expose port
 EXPOSE 8000
 
-# Use virtualenv and run uvicorn
-CMD ["/opt/venv/bin/uvicorn", "app.main:app", "--host=0.0.0.0", "--port=8000"]
+# Start command (adjust if your app entry point differs)
+CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=8000"]
