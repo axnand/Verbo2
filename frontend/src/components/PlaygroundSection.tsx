@@ -17,6 +17,8 @@ export function PlaygroundSection() {
   const [rephrased, setRephrased] = useState("")
   const [isDetecting, setIsDetecting] = useState(false)
   const [isRephrasing, setIsRephrasing] = useState(false)
+  const [correctedText, setCorrectedText] = useState("");
+  const [isCorrecting, setIsCorrecting] = useState(false);
   const { toast } = useToast()
 
   
@@ -38,7 +40,8 @@ export function PlaygroundSection() {
     const data = await res.json();
 
     const score = data.overall_ai_score || 0;
-    setAiScore(score);
+    const percentage = Math.round(score * 100);
+    setAiScore(percentage);
 
     const flaggedSentences: { sentence: string; ai_likelihood: number }[] =
       data.flagged_sentences || [];
@@ -58,7 +61,7 @@ flaggedSentences.forEach(({ sentence, ai_likelihood }) => {
   }
 
   const normalized = normalize(sentence);
-  const span = `<span class="${colorClass} rounded px-1">${sentence}</span>`;
+  const span = `<span class="${colorClass} rounded px-1">${sentence}</span>`; 
   sentenceMap.set(normalized, span);
 });
 
@@ -92,7 +95,7 @@ const handleRephrase = async () => {
     });
     const data = await res.json();
 
-    setRephrased(data.rephrased || "");
+    setRephrased(data.rephrased_text || "");
   } catch (err) {
     toast({ title: "Error", description: "Failed to rephrase text." });
   } finally {
@@ -107,6 +110,27 @@ const handleRephrase = async () => {
       description: `${type} copied to clipboard`,
     })
   }
+
+  const handleGrammarCheck = async () => { 
+    if (!text.trim()) return; 
+    setIsCorrecting(true);
+    try {
+       const res = await fetch(`${apiBaseUrl}/grammar`, { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ text }),
+     }); 
+     
+    const data = await res.json();
+
+    setCorrectedText(data.corrected_text || "");
+
+    } catch (err) { 
+      toast({ title: "Error", description: "Failed to check grammar." }); 
+    } finally { 
+      setIsCorrecting(false); 
+    } 
+  };
 
   return (
     <section className="py-20 px-6">
@@ -245,6 +269,25 @@ const handleRephrase = async () => {
                   )}
                   {isRephrasing ? "Rephrasing..." : "Rephrase"}
                 </Button>
+                <Button 
+                  onClick={handleGrammarCheck}
+                  disabled={!text.trim() || isCorrecting}
+                  variant="secondary"
+                  size="lg"
+                  className="w-full"
+                >
+                  {isCorrecting ? (
+                    <motion.div 
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Wand2 className="w-5 h-5 mr-2" />
+                    </motion.div>
+                  ) : (
+                    <Wand2 className="w-5 h-5 mr-2" />
+                  )}
+                  {isCorrecting ? "Fixing Grammar..." : "Fix Grammar"}
+                </Button>
               </div>
 
               {rephrased && (
@@ -276,6 +319,31 @@ const handleRephrase = async () => {
                     >
                       <Copy className="w-4 h-4 mr-2" />
                       Copy Rephrased
+                    </Button>
+                  </div>
+                </motion.div>
+              )}
+
+              {correctedText && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-4"
+                >
+                  <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                    <p className="text-sm font-medium mb-2 text-blue-400">Grammar Fixed:</p>
+                    <p className="text-sm leading-relaxed font-mono">{correctedText}</p>
+                  </div>
+                  
+                  <div className="flex space-x-3">
+                    <Button 
+                      variant="default"
+                      size="sm"
+                      onClick={() => copyToClipboard(correctedText, "Grammar-fixed text")}
+                      className="flex-1"
+                    >
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy Fixed
                     </Button>
                   </div>
                 </motion.div>
