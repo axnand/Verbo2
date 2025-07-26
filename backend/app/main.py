@@ -27,3 +27,7 @@ app.add_middleware(
 app.include_router(detect.router, prefix="/api", tags=["AI Detection"])
 app.include_router(rephrase.router, prefix="/api", tags=["Rephrasing"])
 app.include_router(grammar.router, prefix="/api")
+
+@app.get("/", tags=["Root"])
+async def read_root():
+    return {"message": "Welcome to the Verbo Backend API."}
