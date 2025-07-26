@@ -1,0 +1,27 @@
+# Ignore model cache, Python cache, and other unnecessary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite
+*.db
+
+# Hugging Face and pip cache
+.cache/
+huggingface/
+~/.cache/
+~/.huggingface/
+
+# Env and build artifacts
+venv/
+.env
+.env.*
+*.egg-info/
+dist/
+build/
+.idea/
+.vscode/
+*.bak
+.DS_Store
+node_modules/x

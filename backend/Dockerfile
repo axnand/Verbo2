@@ -1,46 +1,44 @@
-# ─────────────────────────────────────────────
-# Stage 1: Build environment with pip + dependencies
-# ─────────────────────────────────────────────
-FROM python:3.11-slim as builder
+# ---------- Stage 1: Install dependencies ----------
+FROM python:3.11-slim AS builder
 
-ENV POETRY_VERSION=1.8.2
+WORKDIR /app
+
+# Set environment to avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    build-essential \
- && apt-get clean && rm -rf /var/lib/apt/lists/*
+    build-essential gcc wget git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy only requirements first to leverage Docker cache
+COPY requirements.txt .
+
+# Create virtualenv & install dependencies
+RUN python -m venv /venv && \
+    . /venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# ---------- Stage 2: Copy source & run ----------
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copy requirements and install into custom dir
-COPY requirements.txt .
-
-RUN pip install --upgrade pip \
- && pip install --prefix=/install --no-cache-dir -r requirements.txt
-
-# ─────────────────────────────────────────────
-# Stage 2: Runtime
-# ─────────────────────────────────────────────
-FROM python:3.11-slim
-
-# Set cache path (not included in image)
+# Set environment for Hugging Face cache
 ENV TRANSFORMERS_CACHE=/tmp/hf_cache \
-    HF_HOME=/tmp/hf_home \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-WORKDIR /app
+# Copy virtualenv from builder
+COPY --from=builder /venv /venv
+ENV PATH="/venv/bin:$PATH"
 
-# Copy installed dependencies from builder
-COPY --from=builder /install /usr/local
+# Copy only app source code
+COPY app/ ./app
 
-# Copy only source code, not extra files
-COPY app/ app/
-
-
-# Expose port
+# Expose FastAPI port
 EXPOSE 8000
 
-# Start command (adjust if your app entry point differs)
-CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=8000"]
+# Start FastAPI app
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
