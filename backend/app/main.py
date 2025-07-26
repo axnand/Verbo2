@@ -11,7 +11,7 @@ app = FastAPI(
 
 # CORS Setup
 origins = [
-    "http://localhost:6000",  # for local Vite frontend
+    "http://localhost:8080",  # for local Vite frontend
     "https://verbo-ai.vercel.app",  # production
 ]
 
