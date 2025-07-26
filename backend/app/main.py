@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import detect, rephrase
 
+
 app = FastAPI(
     title="Verbo Backend",
     description="Backend for Verbo Chrome Extension to detect and rephrase AI-generated text",

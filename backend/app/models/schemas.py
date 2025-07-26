@@ -3,7 +3,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from pydantic import Field
-
+from typing import Literal
 # ---------- Detection Models ----------
 
 class DetectInput(BaseModel):
@@ -21,7 +21,7 @@ class DetectResponse(BaseModel):
 
 class RephraseInput(BaseModel):
     text: str
-    tone: str = "general"  # 'polite', 'professional', 'casual', 'witty'
+    tone: Literal["general", "formal", "casual", "academic", "creative"]
 
 class RephraseResponse(BaseModel):
     original_text: str
