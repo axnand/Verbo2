@@ -37,7 +37,7 @@ COPY --from=builder /install /usr/local
 
 # Copy only source code, not extra files
 COPY app/ app/
-COPY main.py .
+
 
 # Expose port
 EXPOSE 8000
