@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import detect, rephrase
+from app.api import detect, rephrase, grammar
 
 
 app = FastAPI(
@@ -11,7 +11,7 @@ app = FastAPI(
 
 # CORS Setup
 origins = [
-    "http://localhost:8000",  # for local Vite frontend
+    "http://localhost:6000",  # for local Vite frontend
     "https://verbo-ai.vercel.app",  # production
 ]
 
@@ -26,3 +26,4 @@ app.add_middleware(
 # Register routes
 app.include_router(detect.router, prefix="/api", tags=["AI Detection"])
 app.include_router(rephrase.router, prefix="/api", tags=["Rephrasing"])
+app.include_router(grammar.router, prefix="/api")
