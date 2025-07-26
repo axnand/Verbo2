@@ -19,26 +19,66 @@ export function PlaygroundSection() {
   const [isRephrasing, setIsRephrasing] = useState(false)
   const { toast } = useToast()
 
-  const handleDetectAI = async () => {
-    if (!text.trim()) return;
-    setIsDetecting(true);
+  
 
-    try {
-      const res = await fetch(`${apiBaseUrl}/detect`, {
+  const handleDetectAI = async () => {
+  if (!text.trim()) return;
+
+  setIsDetecting(true);
+  setHighlightedText(""); // clear previous
+  setAiScore(null); // clear previous
+
+  try {
+    const res = await fetch(`${apiBaseUrl}/detect`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
-      const data = await res.json();
 
-      setAiScore(data.score);
-      setHighlightedText(data.highlighted_html || "");
-    } catch (err) {
-      toast({ title: "Error", description: "Failed to detect AI content." });
-    } finally {
-      setIsDetecting(false);
-    }
-  };
+    const data = await res.json();
+
+    const score = data.overall_ai_score || 0;
+    setAiScore(score);
+
+    const flaggedSentences: { sentence: string; ai_likelihood: number }[] =
+      data.flagged_sentences || [];
+
+    const normalize = (str: string) =>
+  str.trim().replace(/[.?!]$/, "").toLowerCase();
+
+const sentenceMap = new Map<string, string>();
+
+flaggedSentences.forEach(({ sentence, ai_likelihood }) => {
+  let colorClass = "";
+
+  if (ai_likelihood > 0.7) {
+    colorClass = "bg-red-500/20 border-b-2 border-red-500";
+  } else if (ai_likelihood > 0.4) {
+    colorClass = "bg-yellow-500/20 border-b-2 border-yellow-500";
+  }
+
+  const normalized = normalize(sentence);
+  const span = `<span class="${colorClass} rounded px-1">${sentence}</span>`;
+  sentenceMap.set(normalized, span);
+});
+
+const sentences = text.split(/(?<=[.?!])\s+/);
+
+const highlighted = sentences
+  .map((s) => sentenceMap.get(normalize(s)) || s)
+  .join(" ");
+    setHighlightedText(highlighted);
+  } catch (err) {
+    console.error("Detection failed:", err);
+    toast({
+      title: "Error",
+      description: "Something went wrong while detecting AI content.",
+      variant: "destructive",
+    });
+  }
+
+  setIsDetecting(false);
+};
 
 const handleRephrase = async () => {
   if (!text.trim()) return;
