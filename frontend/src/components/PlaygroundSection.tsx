@@ -7,55 +7,58 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Copy, Scan, Wand2, AlertTriangle, CheckCircle } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api"
 
 export function PlaygroundSection() {
   const [text, setText] = useState("")
   const [aiScore, setAiScore] = useState<number | null>(null)
   const [highlightedText, setHighlightedText] = useState("")
-  const [tone, setTone] = useState("professional")
+  const [tone, setTone] = useState("general")
   const [rephrased, setRephrased] = useState("")
   const [isDetecting, setIsDetecting] = useState(false)
   const [isRephrasing, setIsRephrasing] = useState(false)
   const { toast } = useToast()
 
   const handleDetectAI = async () => {
-    if (!text.trim()) return
-    
-    setIsDetecting(true)
-    // Simulate AI detection
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    const mockScore = Math.floor(Math.random() * 100)
-    setAiScore(mockScore)
-    
-    // Mock highlighting suspicious sentences
-    const sentences = text.split('. ')
-    const highlighted = sentences.map((sentence, index) => {
-      const suspiciousScore = Math.random()
-      if (suspiciousScore > 0.7) {
-        return `<span class="bg-red-500/20 border-b-2 border-red-500 rounded px-1">${sentence}</span>`
-      } else if (suspiciousScore > 0.4) {
-        return `<span class="bg-yellow-500/20 border-b-2 border-yellow-500 rounded px-1">${sentence}</span>`
-      }
-      return sentence
-    }).join('. ')
-    
-    setHighlightedText(highlighted)
-    setIsDetecting(false)
-  }
+    if (!text.trim()) return;
+    setIsDetecting(true);
 
-  const handleRephrase = async () => {
-    if (!text.trim()) return
-    
-    setIsRephrasing(true)
-    // Simulate rephrasing
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    const mockRephrased = `This is a ${tone} rephrased version of your text. It maintains the original meaning while sounding more human and natural. The content has been restructured to eliminate AI-detection patterns while preserving clarity and intent.`
-    
-    setRephrased(mockRephrased)
-    setIsRephrasing(false)
+    try {
+      const res = await fetch(`${apiBaseUrl}/detect`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+      const data = await res.json();
+
+      setAiScore(data.score);
+      setHighlightedText(data.highlighted_html || "");
+    } catch (err) {
+      toast({ title: "Error", description: "Failed to detect AI content." });
+    } finally {
+      setIsDetecting(false);
+    }
+  };
+
+const handleRephrase = async () => {
+  if (!text.trim()) return;
+  setIsRephrasing(true);
+
+  try {
+    const res = await fetch(`${apiBaseUrl}/rephrase`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, tone }),
+    });
+    const data = await res.json();
+
+    setRephrased(data.rephrased || "");
+  } catch (err) {
+    toast({ title: "Error", description: "Failed to rephrase text." });
+  } finally {
+    setIsRephrasing(false);
   }
+};
 
   const copyToClipboard = (content: string, type: string) => {
     navigator.clipboard.writeText(content)
@@ -174,6 +177,7 @@ export function PlaygroundSection() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="general">General</SelectItem>
                       <SelectItem value="professional">Professional</SelectItem>
                       <SelectItem value="polite">Polite</SelectItem>
                       <SelectItem value="casual">Casual</SelectItem>
