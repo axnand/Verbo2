@@ -2,8 +2,7 @@ fastapi
 uvicorn
 transformers
 torch
-scikit-learn
 pydantic
-tiktoken
 protobuf
 huggingface-hub
+language_tool_python
