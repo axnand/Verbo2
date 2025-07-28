@@ -1,40 +1,27 @@
-let inputBox = document.getElementById("inputText");
+const input = document.getElementById("inputText");
+const result = document.getElementById("result");
 
-chrome.runtime.onMessage.addListener((msg) => {
-  if (msg.action === "openPopup") {
-    inputBox.value = msg.text;
+document.getElementById("detect").onclick = () => callAPI("detect");
+document.getElementById("rephrase").onclick = () => callAPI("rephrase");
+document.getElementById("fix").onclick = () => callAPI("grammar");
+
+async function callAPI(type) {
+  const text = input.value.trim();
+  if (!text) return;
+
+  const payload = type === "rephrase"
+    ? { text, tone: "casual" }
+    : { text };
+
+  try {
+    const res = await fetch(`https://axnand-verbo-backend.hf.space/api/${type}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    result.innerText = data.result || data.rephrased || data.corrected || JSON.stringify(data);
+  } catch (e) {
+    result.innerText = "Error calling API.";
   }
-});
-
-async function detect() {
-  const text = inputBox.value;
-  const res = await fetch("https://axnand-verbo-backend.hf.space/api/detect", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text })
-  });
-  const data = await res.json();
-  document.getElementById("result").innerText = data.result || JSON.stringify(data);
-}
-
-async function rephrase() {
-  const text = inputBox.value;
-  const res = await fetch("https://axnand-verbo-backend.hf.space/api/rephrase", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text, tone: "casual" }) // or let user select tone
-  });
-  const data = await res.json();
-  document.getElementById("result").innerText = data.rephrased || JSON.stringify(data);
-}
-
-async function fix() {
-  const text = inputBox.value;
-  const res = await fetch("https://axnand-verbo-backend.hf.space/api/grammar", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text })
-  });
-  const data = await res.json();
-  document.getElementById("result").innerText = data.corrected || JSON.stringify(data);
 }
