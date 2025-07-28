@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: sans-serif; padding: 1em; width: 300px; }
+    button { margin-top: 0.5em; width: 100%; }
+  </style>
+</head>
+<body>
+  <h3>Verbo AI Assistant</h3>
+  <textarea id="inputText" placeholder="Selected text will appear here..." rows="5" style="width: 100%;"></textarea>
+  <button onclick="detect()">Detect AI</button>
+  <button onclick="rephrase()">Rephrase</button>
+  <button onclick="fix()">Grammar Fix</button>
+  <div id="result" style="margin-top: 1em;"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
