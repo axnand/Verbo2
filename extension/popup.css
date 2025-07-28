@@ -9,9 +9,7 @@ body {
   width: 380px;
   height: auto;
   overflow: hidden;
-  border-radius: 12px;
   background: transparent;
-
 }
 
 /* CSS Variables for Design System */
@@ -70,7 +68,6 @@ body {
   position: relative;
   overflow: hidden;
   min-height: 500px;
-  border-radius: 12px;
   border: 1px solid hsl(var(--border));
 }
 
