@@ -1,44 +1,23 @@
-# ---------- Stage 1: Install dependencies ----------
-FROM python:3.11-slim 
-
-WORKDIR /app
-
-# Set environment to avoid interactive prompts
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential gcc wget git \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy only requirements first to leverage Docker cache
-COPY requirements.txt .
-
-# Create virtualenv & install dependencies
-RUN python -m venv /venv && \
-    . /venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
-
-# ---------- Stage 2: Copy source & run ----------
+# Base image
 FROM python:3.11-slim
 
+# Set working directory
 WORKDIR /app
 
-# Set environment for Hugging Face cache
+# Environment variables for better logging and HF cache
 ENV TRANSFORMERS_CACHE=/tmp/hf_cache \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
 
-# Copy virtualenv from builder
-COPY --from=builder /venv /venv
-ENV PATH="/venv/bin:$PATH"
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy only app source code
-COPY app/ ./app
+# Copy app code
+COPY app/ ./app/
 
-# Expose FastAPI port
+# Expose port for FastAPI
 EXPOSE 8000
 
-# Start FastAPI app
+# Start the FastAPI server
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
