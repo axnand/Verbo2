@@ -14,8 +14,29 @@
       "16": "icon.png",
       "48": "icon.png",
       "128": "icon.png"
-    }
+    },
+    "default_title": "AI Insight"
   },
+  "commands": {
+    "open-popup": {
+        "suggested_key": {
+        "default": "Ctrl+Shift+Y"
+        },
+        "description": "Open Verbo popup"
+    },
+    "detect-ai": {
+        "suggested_key": {
+        "default": "Ctrl+Shift+D"
+        },
+        "description": "Detect AI in selected text"
+    },
+    "rephrase-text": {
+        "suggested_key": {
+        "default": "Ctrl+Shift+R"
+        },
+        "description": "Rephrase selected text"
+    }
+},
   "icons": {
     "16": "icon.png",
     "48": "icon.png",
@@ -25,7 +46,8 @@
     {
       "matches": ["<all_urls>"],
       "js": ["content.js"],
-      "run_at": "document_idle"
+      "run_at": "document_idle",
+      "css": ["content.css"]
     }
   ]
 }

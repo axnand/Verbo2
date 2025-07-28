@@ -1,18 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    body { font-family: sans-serif; padding: 1em; width: 300px; }
-    button { margin-top: 0.5em; width: 100%; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
 </head>
-<body>
-  <h3>Verbo AI Assistant</h3>
-  <textarea id="inputText" placeholder="Paste text here..." rows="5" style="width: 100%;"></textarea>
-  <button id="detect">Detect AI</button>
-  <button id="rephrase">Rephrase</button>
-  <button id="fix">Grammar Fix</button>
-  <div id="result" style="margin-top: 1em;"></div>
+<body class="dark">
+  <div class="popup-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <img src="icon.png" alt="AI Insight Logo" class="ai-brain"> 
+        </div>
+        <div class="logo-text">
+          <h1 class="title">AI Insight</h1>
+          <p class="subtitle">Detect & Humanize</p>
+        </div>
+      </div>
+      <div class="theme-toggle" id="themeToggle">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2m0 18v2M4.2 4.2l1.4 1.4m12.8 12.8l1.4 1.4M1 12h2m18 0h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>
+        </svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="input-section">
+      <div class="floating-orb orb-1"></div>
+      <div class="floating-orb orb-2"></div>
+      
+      <label class="input-label">Enter text to analyze</label>
+      <textarea 
+        id="inputText" 
+        placeholder="Paste or type your text here..."
+        rows="4"
+        class="text-input"
+      ></textarea>
+      
+      <!-- Tone Selection -->
+      <div class="tone-section">
+        <label class="input-label">Rewrite Tone</label>
+        <select id="toneSelect" class="tone-select">
+          <option value="professional">Professional</option>
+          <option value="casual" selected>Casual</option>
+          <option value="polite">Polite</option>
+          <option value="witty">Witty</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button id="detectBtn" class="btn btn-primary">
+        <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <span>Detect AI</span>
+        <div class="btn-glow"></div>
+      </button>
+      
+      <button id="rephraseBtn" class="btn btn-secondary">
+        <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21.5 2l-5.5 5.5-2.5-2.5L8 10.5l5.5 5.5L19 10.5l-2.5-2.5L21.5 2z"/>
+          <path d="M16 17l-5.5-5.5L5 17"/>
+        </svg>
+        <span>Rephrase</span>
+        <div class="btn-glow"></div>
+      </button>
+      
+      <button id="fixBtn" class="btn btn-accent">
+        <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m9 12 2 2 4-4"/>
+          <path d="M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z"/>
+          <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+        </svg>
+        <span>Grammar Fix</span>
+        <div class="btn-glow"></div>
+      </button>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultSection" class="result-section hidden">
+      <div class="result-header">
+        <h3 class="result-title">Results</h3>
+        <button id="copyBtn" class="copy-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+          </svg>
+          Copy
+        </button>
+      </div>
+      
+      <div id="aiScore" class="ai-score hidden">
+        <div class="score-label">AI Confidence Score</div>
+        <div class="score-badge">
+          <span id="scoreValue">0%</span>
+          <svg class="score-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+      </div>
+      
+      <div id="resultText" class="result-text"></div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="loading-state hidden">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Processing...</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p class="footer-text">Made with ❤️ for better writing</p>
+    </div>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
