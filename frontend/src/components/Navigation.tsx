@@ -22,9 +22,9 @@ export const Navigation = () => {
 
   const navItems = [
     { name: "Home", path: "/" },
-    { name: "Documentation", path: "/documentation" },
-    { name: "Privacy", path: "/privacy" },
-    { name: "Terms", path: "/terms" }
+    // { name: "Documentation", path: "/documentation" },
+    { name: "Privacy Policy", path: "/privacy" },
+    { name: "Terms of Service", path: "/terms" }
   ];
 
   return (

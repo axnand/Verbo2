@@ -80,7 +80,9 @@ export function HeroSection() {
               </motion.div>
             </Button>
             
-            <Button variant="glass" size="xl">
+            <Button variant="glass" size="xl" onClick={() => {
+              document.getElementById("playground")?.scrollIntoView({ behavior: "smooth" });
+            }}>
               Try Demo Below
             </Button>
           </motion.div>

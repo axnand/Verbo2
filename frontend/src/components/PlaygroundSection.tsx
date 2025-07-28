@@ -141,6 +141,7 @@ const handleRephrase = async () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
+          id="playground"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Interactive AI Playground

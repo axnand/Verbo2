@@ -57,11 +57,10 @@ export function Footer() {
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <div className="space-y-2">
               {[
-                { label: "Chrome Web Store", href: "#" },
-                { label: "Documentation", href: "#" },
-                { label: "Privacy Policy", href: "#" },
-                { label: "Terms of Service", href: "#" },
-                { label: "Support", href: "#" }
+                { label: "Chrome Web Store", href: "/documentation" },
+                // { label: "Documentation", href: "/documentation" },
+                { label: "Privacy Policy", href: "/privacy" },
+                { label: "Terms of Service", href: "/terms" },
               ].map((link, index) => (
                 <motion.a
                   key={link.label}
@@ -100,21 +99,7 @@ export function Footer() {
             </div>
 
             
-            <div className="pt-4">
-              <p className="text-sm text-muted-foreground mb-2">
-                Want updates on new features?
-              </p>
-              <div className="flex space-x-2">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email"
-                  className="flex-1 px-3 py-2 bg-background/50 border border-white/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                />
-                <Button size="sm" variant="default">
-                  Subscribe
-                </Button>
-              </div>
-            </div>
+            
           </div>
         </motion.div>
 
@@ -137,7 +122,7 @@ export function Footer() {
             </motion.div>
             <span>by</span>
             <a 
-              href="https://github.com/anand" 
+              href="https://anandmohan.vercel.app" 
               className="font-medium text-primary hover:underline"
               target="_blank"
               rel="noopener noreferrer"

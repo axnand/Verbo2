@@ -4,29 +4,38 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const faqs = [
   {
     question: "Is Verbo free to use?",
-    answer: "Yes! Verbo is completely free to use. We believe in making AI detection and text humanization accessible to everyone. There are no hidden fees, subscriptions, or usage limits."
+    answer: "Absolutely. Verbo is 100% free—no subscriptions, paywalls, or hidden fees. We believe powerful AI tools should be accessible to everyone."
   },
   {
-    question: "Do you store any of my data?",
-    answer: "Absolutely not. Verbo processes all text locally in your browser. Your content never leaves your device, ensuring complete privacy and security. We don't collect, store, or transmit any of your text data."
+    question: "Does Verbo store or share my data?",
+    answer: "Never. Verbo runs entirely on your device. We do not collect, store, or transmit any of your text data—your privacy is fully protected."
   },
   {
-    question: "Does it work on all websites?",
-    answer: "Yes, Verbo works on virtually any website. Our Chrome extension can analyze text from any webpage, form field, or text editor. Simply highlight text or paste it into our popup interface."
+    question: "Is it compatible with all websites?",
+    answer: "Yes, Verbo works seamlessly across most websites. Whether it's a blog, email, form, or editor, you can analyze or rephrase text with ease."
   },
   {
-    question: "Can I use it offline?",
-    answer: "Yes! Once installed, Verbo works completely offline. All AI models are downloaded and run locally in your browser, so you don't need an internet connection to detect AI content or rephrase text."
+    question: "Can I use Verbo offline?",
+    answer: "No. Verbo requires an internet connection to function because it sends your input to our secure API for AI detection, rephrasing, and grammar correction. None of the processing happens locally in your browser."
   },
   {
-    question: "How accurate is the AI detection?",
-    answer: "Our AI detection model achieves approximately 94% accuracy on standard benchmarks. However, accuracy can vary depending on text length, writing style, and the AI model that generated the content."
+    question: "How accurate is Verbo’s AI detection?",
+    answer: "Verbo achieves up to 94% accuracy on standard detection benchmarks. Actual results may vary based on text length, complexity, and the AI model used."
   },
   {
-    question: "What AI models does it detect?",
-    answer: "Verbo can detect content from most major AI models including ChatGPT, GPT-4, Claude, Bard, and other transformer-based language models. Our detection model is regularly updated to stay current with new AI systems."
+    question: "Which AI models can Verbo detect?",
+    answer: "Verbo is trained to detect text from major AI systems like ChatGPT (GPT-3.5, GPT-4), Claude, Bard, and other transformer-based language models. Our detection engine is updated regularly."
+  },
+  {
+    question: "Does Verbo use OpenAI models?",
+    answer: "No. Verbo uses open-source Hugging Face models that run directly in your browser, ensuring transparency, control, and full offline functionality."
+  },
+  {
+    question: "Can I use Verbo inside Google Docs or Word?",
+    answer: "Not directly. However, you can copy text into the Verbo extension popup for detection and rephrasing. Support for inline tools is coming soon."
   }
 ]
+
 
 export function FAQSection() {
   return (
