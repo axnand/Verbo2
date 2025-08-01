@@ -9,7 +9,7 @@ export function HeroSection() {
     const installSection = document.getElementById('install-extension')
     installSection?.scrollIntoView({ behavior: 'smooth' })
   }
-  
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
@@ -79,21 +79,24 @@ export function HeroSection() {
               <HelpCircle className="w-5 h-5 mr-2" />
               How to Install
             </Button>
-            <Button 
-              variant="chrome" 
-              size="xl" 
-              className="group"
-            >
-              <Chrome className="w-5 h-5 mr-2" />
-              Add to Chrome
-              <motion.div
-                className="ml-2"
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-              >
-                <Download className="w-4 h-4" />
-              </motion.div>
-            </Button>
+            <a href="/extension.zip" download>
+  <Button 
+    variant="chrome" 
+    size="xl" 
+    className="group flex items-center"
+  >
+    <Chrome className="w-5 h-5 mr-2" />
+    Add to Chrome
+    <motion.div
+      className="ml-2"
+      animate={{ rotate: [0, 10, -10, 0] }}
+      transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+    >
+      <Download className="w-4 h-4" />
+    </motion.div>
+  </Button>
+</a>
+
             
             <Button variant="glass" size="xl" onClick={() => {
               document.getElementById("playground")?.scrollIntoView({ behavior: "smooth" });

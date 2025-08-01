@@ -7,39 +7,47 @@ const installSteps = [
   {
     number: "01",
     title: "Download the Extension",
-    description: "Click on the 'Add to Chrome' button to download the .crx file.",
+    description: "Click the button above to download the ZIP file containing the Verbo extension.",
     icon: Download,
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=2070&auto=format&fit=crop"
   },
   {
     number: "02", 
-    title: "Go to Extensions Page",
-    description: "Open Chrome and navigate to chrome://extensions/.",
+    title: "Extract the ZIP",
+    description: "Unzip the downloaded file to a folder on your computer.",
     icon: Upload,
-    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2070&auto=format&fit=crop"
   },
   {
     number: "03",
-    title: "Enable Developer Mode", 
-    description: "Toggle the Developer Mode switch on the top right.",
+    title: "Go to Extensions Page", 
+    description: "Open Chrome and navigate to chrome://extensions in the address bar.",
+    icon: ToggleLeft,
+    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2070&auto=format&fit=crop"
+  },
+  {
+    number: "04",
+    title: "Enable Developer Mode",
+    description: "Turn on Developer Mode using the toggle at the top right corner.",
     icon: ToggleLeft,
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=2070&auto=format&fit=crop"
   },
   {
-    number: "04",
-    title: "Drag & Drop the File",
-    description: "Drag the downloaded .crx file into the Chrome window.",
+    number: "05",
+    title: "Load Unpacked Extension",
+    description: "Click 'Load unpacked' and select the extracted folder to install Verbo.",
     icon: Upload,
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1600267165860-eb6e5547b336?q=80&w=2070&auto=format&fit=crop"
   },
   {
-    number: "05",
-    title: "Confirm Installation",
-    description: "Chrome will ask for confirmation. Click 'Add Extension'.",
+    number: "06",
+    title: "You're All Set!",
+    description: "Verbo is now active in your browser and ready to assist you.",
     icon: CheckCircle,
-    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2070&auto=format&fit=crop"
   }
-]
+];
+
 
 export function InstallExtensionSection() {
   const scrollToTop = () => {
@@ -96,17 +104,17 @@ export function InstallExtensionSection() {
               <div className="flex-1 space-y-6">
                 <div className="flex items-center gap-4">
                   <motion.div 
-                    className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center text-white font-bold text-xl"
+                    className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center text-white font-bold md:text-xl text-sm"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   >
                     {step.number}
                   </motion.div>
                   <div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                    <h3 className="text-base md:text-3xl font-bold text-foreground mb-2">
                       {step.title}
                     </h3>
-                    <p className="text-lg text-muted-foreground">
+                    <p className="md:text-lg text-xs text-muted-foreground">
                       {step.description}
                     </p>
                   </div>
