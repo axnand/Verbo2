@@ -1,9 +1,15 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Chrome, Download, Sparkles } from "lucide-react"
+import { Chrome, Download, HelpCircle, Sparkles } from "lucide-react"
 import { ThemeToggle } from "./ThemeToggle"
 
 export function HeroSection() {
+
+  const scrollToInstall = () => {
+    const installSection = document.getElementById('install-extension')
+    installSection?.scrollIntoView({ behavior: 'smooth' })
+  }
+  
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
@@ -64,6 +70,15 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
           >
+             <Button 
+              variant="glass" 
+              size="xl"
+              onClick={scrollToInstall}
+              className="group"
+            >
+              <HelpCircle className="w-5 h-5 mr-2" />
+              How to Install
+            </Button>
             <Button 
               variant="chrome" 
               size="xl" 

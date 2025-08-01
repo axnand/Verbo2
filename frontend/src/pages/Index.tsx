@@ -4,6 +4,7 @@ import { PlaygroundSection } from "@/components/PlaygroundSection"
 import { FeaturesSection } from "@/components/FeaturesSection"
 import { HowItWorksSection } from "@/components/HowItWorksSection"
 import { ScreenshotSection } from "@/components/ScreenshotSection"
+import {InstallExtensionSection} from "@/components/InstallExtensionSection"
 import { TechStackSection } from "@/components/TechStackSection"
 import { FAQSection } from "@/components/FAQSection"
 import { Navigation } from "@/components/Navigation"
@@ -16,9 +17,10 @@ const Index = () => {
         <Navigation />
         <HeroSection />
         <PlaygroundSection />
+        
+        <InstallExtensionSection />
         <FeaturesSection />
         <HowItWorksSection />
-        <ScreenshotSection />
         <TechStackSection />
         <FAQSection />
         <Footer />
