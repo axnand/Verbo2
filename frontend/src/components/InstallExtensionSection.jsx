@@ -104,17 +104,17 @@ export function InstallExtensionSection() {
               <div className="flex-1 space-y-6">
                 <div className="flex items-center gap-4">
                   <motion.div 
-                    className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center text-white font-bold md:text-xl text-sm"
+                    className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center text-white font-bold text-xl sm:text-xs"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   >
                     {step.number}
                   </motion.div>
                   <div>
-                    <h3 className="text-base md:text-3xl font-bold text-foreground mb-2">
+                    <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
                       {step.title}
                     </h3>
-                    <p className="md:text-lg text-xs text-muted-foreground">
+                    <p className="text-lg text-muted-foreground">
                       {step.description}
                     </p>
                   </div>
