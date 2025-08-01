@@ -23,19 +23,19 @@ export function PlaygroundSection() {
 
   
 
-  const handleDetectAI = async () => {
+ const handleDetectAI = async () => {
   if (!text.trim()) return;
 
   setIsDetecting(true);
-  setHighlightedText(""); // clear previous
-  setAiScore(null); // clear previous
+  setHighlightedText("");
+  setAiScore(null);
 
   try {
     const res = await fetch(`${apiBaseUrl}/detect`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
 
     const data = await res.json();
 
@@ -47,29 +47,35 @@ export function PlaygroundSection() {
       data.flagged_sentences || [];
 
     const normalize = (str: string) =>
-  str.trim().replace(/[.?!]$/, "").toLowerCase();
+      str.trim().replace(/\s+/g, " ").replace(/[.?!]$/, "").toLowerCase();
 
-const sentenceMap = new Map<string, string>();
+    const sentenceMap = new Map<string, string>();
+    console.log('flaggedSentences:', flaggedSentences);
 
-flaggedSentences.forEach(({ sentence, ai_likelihood }) => {
-  let colorClass = "";
+    flaggedSentences.forEach(({ sentence, ai_likelihood }) => {
+      let colorClass = "";
 
-  if (ai_likelihood > 0.7) {
-    colorClass = "bg-red-500/20 border-b-2 border-red-500";
-  } else if (ai_likelihood > 0.4) {
-    colorClass = "bg-yellow-500/20 border-b-2 border-yellow-500";
-  }
+      if (ai_likelihood > 0.7) {
+        colorClass = "bg-red-500/20 border-b-2 border-red-500";
+      } else if (ai_likelihood > 0.4) {
+        colorClass = "bg-yellow-500/20 border-b-2 border-yellow-500";
+      }
 
-  const normalized = normalize(sentence);
-  const span = `<span class="${colorClass} rounded px-1">${sentence}</span>`; 
-  sentenceMap.set(normalized, span);
-});
+      const normalized = normalize(sentence);
+      const span = `<span class="${colorClass} rounded px-1">${sentence}</span>`;
+      sentenceMap.set(normalized, span);
+    });
 
-const sentences = text.split(/(?<=[.?!])\s+/);
+    console.log('sentenceMap:', sentenceMap);
 
-const highlighted = sentences
-  .map((s) => sentenceMap.get(normalize(s)) || s)
-  .join(" ");
+    const sentences = text
+      .match(/[^.!?]+[.!?]+[\])'"`’”]*|\s*$/g)
+      ?.map((s) => s.trim()) ?? [];
+
+    const highlighted = sentences
+      .map((s) => sentenceMap.get(normalize(s)) || s)
+      .join(" ");
+
     setHighlightedText(highlighted);
   } catch (err) {
     console.error("Detection failed:", err);
@@ -82,6 +88,8 @@ const highlighted = sentences
 
   setIsDetecting(false);
 };
+
+console.log('highlightedText:', highlightedText);
 
 const handleRephrase = async () => {
   if (!text.trim()) return;
